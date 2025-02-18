@@ -1,0 +1,48 @@
+{
+    "name": "OpenCV_UHU",
+    "build": {
+        "context": "..",
+        "options": [
+            "--progress=plain"
+        ],
+        "args": {
+            "dev_user": "${localEnv:USER}"
+        },
+        "dockerfile": "Dockerfile"
+    },
+    "mounts": [
+        "source=/sys/fs/cgroup,target=/sys/fs/cgroup,type=bind,consistency=cached",
+        "type=bind,source=/dev/bus/usb,target=/dev/bus/usb",
+        "type=bind,source=${localEnv:HOME}/codes/sdk_LinuxSDK,target=/workspace/sdk"
+    ],
+    "runArgs": [
+        "--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+        "--gpus",
+        "all",
+        "--privileged",
+        "--net=host",
+        "--ipc=host"
+    ],
+    "containerEnv": {
+        "DISPLAY": "${localEnv:DISPLAY}"
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "cmake.configureSettings": {}
+            },
+            "extensions": [
+                "ms-vscode.cmake-tools",
+                "ms-vscode.cpptools",
+                "cheshirekow.cmake-format",
+                "ms-vscode.cpptools-extension-pack",
+                "grimmer.vscode-back-forward-button"
+            ]
+        }
+    },
+    "remoteUser": "${localEnv:USER}",
+    "updateRemoteUserUID": true,
+    "initializeCommand": "xhost +local:docker",
+    "overrideCommand": false,
+    "shutdownAction": "stopContainer"
+}
